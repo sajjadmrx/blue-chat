@@ -1,0 +1,19 @@
+{
+  "name": "socket.io-ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "/dist/index.js",
+  "scripts": {
+    "dev": "nodemon src/server.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2",
+    "socket.io": "^4.4.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^16.11.17"
+  }
+}
