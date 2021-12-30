@@ -19,15 +19,20 @@ passport.use(new googleStrategy({
     callbackURL: process.env.GOOGLE_CALLBACK_URL
 },
     async function (accessToken, refreshToken, profile, cb) {
-        let user = await userModel.findOne({ email: profile._json.email })
-        if (!user)
-            user = await userModel.create({
-                username: profile._json.name,
-                email: profile._json.email,
-                provider: 'google',
-                avatar: profile._json.picture,
-                //    password: 
-            })
-        return cb(null, user._id)
+        if (profile._json.email) {
+
+            const email = profile._json.email
+            let user = await userModel.findOne({ email: profile._json.email })
+            if (!user)
+                user = await userModel.create({
+                    username: email.split('@')[0],
+                    email: profile._json.email,
+                    provider: 'google',
+                    avatar: profile._json.picture,
+                    //    password: 
+                })
+            return cb(null, user._id)
+        }
+
     }
 ));

@@ -15,6 +15,7 @@ import mainApi from './routes/api/main.api'
 import mainWeb from './routes/web/main.web'
 import dataBaseMongo from './bin/db.bin'
 import sessionConfig from './configs/sessions.config';
+import Ejs from './helpers/ejs.helper';
 
 
 
@@ -57,6 +58,11 @@ class App {
         app.set('views', path.resolve('views'))
         app.set('view engine', 'ejs')
 
+
+        app.use((req: Request, res: Response, next: NextFunction) => {
+            res.locals = new Ejs(req, res).handel()
+            next()
+        })
 
     }
 

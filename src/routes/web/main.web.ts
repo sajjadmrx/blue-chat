@@ -18,4 +18,6 @@ router.use('/auth', authRoute)
 router.get("/", authMiddleware.isLogin, homeController.index);
 
 
+router.get('/logout', authMiddleware.isLogin, homeController.logout);
+
 export default router;
