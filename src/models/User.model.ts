@@ -30,7 +30,7 @@ const UserSchema = new Schema<IUSER>({
         required: true,
         default: 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'
     }
-});
+}, { timestamps: true });
 
 const userModel = model('User', UserSchema);
 

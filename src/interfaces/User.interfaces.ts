@@ -7,4 +7,6 @@ export interface IUSER extends Document {
     email: string;
     provider: string;
     avatar: string;
+    createdAt: Date;
+    updatedAt: Date;
 }
