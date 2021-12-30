@@ -571,7 +571,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">پیام جدید</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">پیدا کردن دوست</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="بستن">
                         <i class="ti-close"></i>
                     </button>
@@ -579,54 +579,13 @@
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">نـام کاربری:</label>
-                            <input type="text" class="form-control" id="recipient-name">
+                            <label for="input-find-user" class="col-form-label">نـام کاربری:</label>
+                            <input type="text" class="form-control" id="input-find-user">
                         </div>
                         <div class="form-group">
                             <label for="message-text" class="col-form-label">کاربران پیدا شده:</label>
-                            <div class="card-body pt-2">
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item d-flex align-items-center p-l-r-0">
-                                        <figure class="avatar avatar-sm m-r-15">
-                                            <span class="avatar-title bg-success rounded-circle">ی</span>
-                                        </figure>
-                                        <div>
-                                            <h6 class="m-b-0 primary-font">اما واتسون</h6>
-                                            <small class="text-muted">مهندس</small>
-                                        </div>
-                                        <span class="badge badge-danger ml-auto">رد شده</span>
-                                    </li>
-                                    <li class="list-group-item d-flex align-items-center p-l-r-0">
-                                        <figure class="avatar avatar-sm m-r-15">
-                                            <span class="avatar-title bg-danger rounded-circle">ک</span>
-                                        </figure>
-                                        <div>
-                                            <h6 class="m-b-0 primary-font">تونی استارک</h6>
-                                            <small class="text-muted">منابع انسانی</small>
-                                        </div>
-                                        <span class="badge badge-success ml-auto">اتمام یافته</span>
-                                    </li>
-                                    <li class="list-group-item d-flex align-items-center p-l-r-0">
-                                        <figure class="avatar avatar-sm m-r-15">
-                                            <span class="avatar-title bg-warning rounded-circle">آ</span>
-                                        </figure>
-                                        <div>
-                                            <h6 class="m-b-0 primary-font">استیو راجرز</h6>
-                                            <small class="text-muted">مشاور املاک</small>
-                                        </div>
-                                        <span class="badge badge-warning ml-auto">در انتظار</span>
-                                    </li>
-                                    <li class="list-group-item d-flex align-items-center p-l-r-0">
-                                        <figure class="avatar avatar-sm m-r-15">
-                                            <span class="avatar-title bg-info rounded-circle">ل</span>
-                                        </figure>
-                                        <div>
-                                            <h6 class="m-b-0 primary-font">اولیور کوئین</h6>
-                                            <small class="text-muted">مهندس</small>
-                                        </div>
-                                        <span class="badge badge-success ml-auto">اتمام یافته</span>
-                                    </li>
-                                </ul>
+                            <div class="card-body pt-2" id="findUserResult">
+                                <h1> چیزی سرچ کنید</h1>
                             </div>
                         </div>
                     </form>
@@ -686,9 +645,12 @@
     <!-- end -->
     <!-- Plugin scripts -->
     <script src="vendors/bundle.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"
+        integrity="sha512-u9akINsQsAkG9xjc1cnGF4zw5TFDwkxuc9vUp5dltDWYCSmyd0meygbvgXrlc/z7/o4a19Fb5V0OUE58J7dcyw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- App scripts -->
     <script src="assets/js/app.js"></script>
+    <script src="assets/js/custom.js"></script>
     <script src="vendors/select2/js/select2.min.js"></script>
     <script src="assets/js/examples/select2.js"></script>
     <!-- begin::lightbox -->
