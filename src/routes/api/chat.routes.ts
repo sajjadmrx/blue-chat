@@ -8,15 +8,10 @@ const router = Router();
 import Auth from "../../middlewares/auth.middleware";
 
 // controllers
-import dmController from "../../controllers/api/DM.controller";
+import chatController from "../../controllers/api/chat.controller";
 
 
 
-router.get('/:targetId', dmController.openDmOrGet)
-
-
-
-
-
+router.get('/user/:targetId', chatController.createOrGetUserChat);
 
 export default router;
