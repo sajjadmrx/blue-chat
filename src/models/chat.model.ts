@@ -10,6 +10,7 @@ const ChatSchema = new Schema<IChat>({
 
     chatId: { type: String, default: () => nanoid() },
     users: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    latestMessage: { type: Schema.Types.ObjectId, ref: 'Message' },
     isGroup: { type: Boolean, default: false },
 
 
@@ -21,6 +22,8 @@ ChatSchema.methods.getUsers = async function (): Promise<IUSER[]> {
 
     return x.users as IUSER[]
 }
+
+
 
 const chatModel = model('Chat', ChatSchema);
 export default chatModel;

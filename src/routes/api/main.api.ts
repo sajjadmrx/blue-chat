@@ -19,6 +19,7 @@ import messageRoute from './messages.routes'
 router.use(Auth.isLoginApi)
 
 router.use('/users', userRoute)
+
 router.use('/chats', chatRoute)
 
 router.use('/messages', messageRoute)

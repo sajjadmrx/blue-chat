@@ -85,6 +85,15 @@ class ChatApi extends controller {
 
     }
 
+    async find(req: Request, res: Response) {
+        const chats = await chatModel.find({
+            users: { $in: [req.currentUser._id] }
+        }).populate('users', 'userId username avatar latestMessage');
+        // chats.map(x => {
+
+        // })
+        res.json(chats)
+    }
 
 }
 
