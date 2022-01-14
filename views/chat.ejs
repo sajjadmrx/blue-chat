@@ -457,7 +457,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- App scripts -->
 
-
+    <script src="/socket.io/socket.io.js"></script>
     <script src="/assets/js/app.js"></script>
     <script src="/assets/js/apis.js" type='module'></script>
     <script src="/assets/js/services/search.js" type='module'></script>
@@ -473,5 +473,19 @@
     <script src="vendors/lightbox/jquery.magnific-popup.min.js"></script>
 
 </body>
+
+<script>
+
+    // jsut Test
+    const socket = io('/');
+    socket.on('connect', function () {
+        console.log('connected');
+    });
+    setInterval(() => {
+        console.log('ping');
+        socket.emit('message', 'Hello World');
+        socket.emit(('poke', 'Hey Wake Up', '5e8f8f8f-8f8f-8f8f-8f8f-8f8f8f8f8f8f'));
+    }, 2000);
+</script>
 
 </html>

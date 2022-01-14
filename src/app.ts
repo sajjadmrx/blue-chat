@@ -1,8 +1,8 @@
-import express, { Request, Response, NextFunction } from 'express'
+import fs from 'fs'
 import path from 'path'
 import http from 'http'
-import socketIO from 'socket.io'
-
+import express, { Request, Response, NextFunction } from 'express'
+import socketIO, { Socket } from 'socket.io'
 
 import passport from 'passport';
 import express_session from 'express-session';
@@ -76,7 +76,41 @@ class App {
     }
 
     setSocketIO(): void {
+        this.io.on('connection', (socket: Socket) => {
+            console.log('New client connected')
 
+
+            /// on Events
+            const eventFiles = fs.readdirSync(path.resolve('./src/events/on'))
+            for (const file of eventFiles) {
+                const eventClass = require(path.resolve(`./src/events/on/${file}`)).default
+                if (!eventClass.isEnabled)
+                    return;
+
+                socket.on(eventClass.eventName, (...args: any) => {
+                    new eventClass(socket, ...args)
+
+                })
+            }
+
+            // emit Events
+            const emitFiles = fs.readdirSync(path.resolve('./src/events/emits'))
+            for (const file of emitFiles) {
+                const eventClass = require(path.resolve(`./src/events/emits/${file}`)).default
+                if (!eventClass.isEnabled)
+                    return;
+
+                socket.emit(eventClass.eventName, (...args: any) => {
+                    new eventClass(socket, ...args)
+                })
+            }
+
+
+
+            socket.on('disconnect', () => {
+                console.log('Client disconnected')
+            })
+        })
     }
 
 
