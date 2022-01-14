@@ -7,93 +7,44 @@ import controller from "../controllers.main";
 
 class ChatApi extends controller {
 
-    async openChatOrGet(req: Request, res: Response) {
-        const { targetId } = req.params;
+
+    async createOrGetChat(req: Request, res: Response) {
+        const { chatId } = req.params;
 
 
-        const userTarget = await userModel.findOne({ userId: targetId });
-        if (!userTarget) {
-            return res.status(404).json({
-                status: 404,
-                message: 'کاربر یافت نشد'
-            });
-        }
-        const user = req.currentUser;
-        let dm = await chatModel.findOne({ users: { $all: [user._id, userTarget._id] } });
-        if (!dm) {
-            dm = await chatModel.create({ users: [user._id, userTarget._id] });
-        }
-
-        dm = await dm.populate('users', 'userId username avatar')
-        // check blocked
 
 
-        // end check blocked
-
-        // Fetch Messages
-
-
-        // end fetch messages
-
-        delete dm._id
-        res.status(200).json({
-            status: 200,
-            dm,
-            messages: []
-        })
-
-    }
-
-    async createOrGetUserChat(req: Request, res: Response) {
-        const { targetId } = req.params;
-
-
-        const userTarget = await userModel.findOne({ userId: targetId });
-        if (!userTarget) {
-            return res.status(404).json({
-                status: 404,
-                message: 'کاربر یافت نشد'
-            });
-        }
-        const user = req.currentUser;
-        let chat = await chatModel.findOne({ users: { $all: [user._id, userTarget._id] }, isGroup: false });
+        let chat = await chatModel.findOne({ chatId });
+        let user;
         if (!chat) {
-            chat = await chatModel.create({ users: [user._id, userTarget._id] });
+            user = await userModel.findOne({
+                userId: chatId
+            });
+            if (user) {
+                chat = await chatModel.create({
+                    users: [user._id, req.currentUser._id],
+                    isGroup: false
+                })
+            }
         }
 
-        let users = await chat.getUsers();
+        if (!chat) {
+            return res.status(404).json({
+                status: 404,
+                message: 'چت یافت نشد'
+            });
+        }
 
-        users = users.filter(x => x.userId !== user.userId)
+        chat = await chat.populate('users')
 
-        // check blocked
+        let item = {}
 
-
-        // end check blocked
-
-        // Fetch Messages
-
-        //  dm.users = dm.users.filter(u => u.userId !== user._id)
-        // end fetch messages
-
-        delete chat._id
         res.status(200).json({
-            status: 200,
-            chat,
-            users,
+            ...chat.toJSON(),
             messages: []
         })
-
     }
 
-    async find(req: Request, res: Response) {
-        const chats = await chatModel.find({
-            users: { $in: [req.currentUser._id] }
-        }).populate('users', 'userId username avatar latestMessage');
-        // chats.map(x => {
-
-        // })
-        res.json(chats)
-    }
 
 }
 

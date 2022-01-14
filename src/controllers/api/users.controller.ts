@@ -4,6 +4,21 @@ import controller from "../controllers.main";
 
 class UsersApi extends controller {
 
+
+    me(req: Request, res: Response) {
+        const user = req.currentUser;
+        let item = {
+            userId: user.userId,
+            avatar: user.avatar,
+            username: user.username
+
+        }
+        res.json({
+            ...item,
+            isOnline: true
+        })
+    }
+
     async find(req: Request, res: Response) {
         let query: any = req.query;
         if (query.username)

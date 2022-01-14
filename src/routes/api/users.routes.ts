@@ -11,7 +11,7 @@ import Auth from "../../middlewares/auth.middleware";
 
 
 router.get('/', usersController.find)
-
+router.get('/me', usersController.me)
 
 
 

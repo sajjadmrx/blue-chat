@@ -357,7 +357,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-9 col-md-12 chat-body" id="dmParent">
+                <div class="col-xl-9 col-md-12 chat-body" id="chat-body">
 
 
                 </div>
@@ -389,8 +389,10 @@
                         </div>
                         <div class="form-group">
                             <label for="message-text" class="col-form-label">کاربران پیدا شده:</label>
-                            <div class="card-body pt-2" id="findUserResult">
-                                <h1> چیزی سرچ کنید</h1>
+                            <div class="card-body pt-2">
+                                <ul class="list-group list-group-flush" id="findUserResult">
+
+                                </ul>
                             </div>
                         </div>
                     </form>
@@ -454,13 +456,22 @@
         integrity="sha512-u9akINsQsAkG9xjc1cnGF4zw5TFDwkxuc9vUp5dltDWYCSmyd0meygbvgXrlc/z7/o4a19Fb5V0OUE58J7dcyw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- App scripts -->
-    <script src="assets/js/app.js"></script>
-    <script src="assets/js/custom.js"></script>
-    <script src="vendors/select2/js/select2.min.js"></script>
-    <script src="assets/js/examples/select2.js"></script>
+
+
+    <script src="/assets/js/app.js"></script>
+    <script src="/assets/js/apis.js" type='module'></script>
+    <script src="/assets/js/services/search.js" type='module'></script>
+    <script src="/assets/js/eventDocs.js" type='module'></script>
+    <script src="/assets/js/ui/searchUserUi.js" type='module'></script>
+    <script src="/assets/js/ui/chat_sidebar.js" type='module'></script>
+    <script src="/assets/js/ui/chatBodyUi.js" type='module'></script>
+    <script src="/assets/js/store.js" type='module'></script>
+    <script src="/assets/js/main.js" type='module'></script>
+    <script src="/vendors/select2/js/select2.min.js"></script>
+
     <!-- begin::lightbox -->
     <script src="vendors/lightbox/jquery.magnific-popup.min.js"></script>
-    <script src="assets/js/examples/lightbox.js"></script>
+
 </body>
 
 </html>
