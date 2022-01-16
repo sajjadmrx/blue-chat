@@ -1,3 +1,5 @@
+import ChatService from '../services/chats.js'
+import * as store from '../store.js'
 class ChatSidebarUi {
 
     #parent = document.getElementById('chatList')
@@ -8,7 +10,7 @@ class ChatSidebarUi {
 
         const html = `
 
-            <a href="#" class="list-group-item list-group-item-action d-flex ${active}" data-chatId='${chat.chatId}'>
+            <a href="#" id='chat_sider_${chat.chatId}' class="list-group-item list-group-item-action d-flex ${active} chatSider" data-chatId='${chat.chatId}'>
 								<div class="flex-shrink-0">
 									<figure class="avatar avatar-sm">
 										<span class="avatar-title bg-danger rounded-circle">
@@ -28,7 +30,22 @@ class ChatSidebarUi {
         
         `;
 
-        this.#parent.innerHTML += html;
+        // find the chat
+        const chatElement = this.#parent.querySelector(`[data-chatId='${chat.chatId}']`);
+        if (chatElement) {
+            if (active) {
+                chatElement.classList.add(active)
+            }
+        }
+        else {
+            this.#parent.innerHTML += html;
+        }
+
+        $('.chatSider').on('click', function (e) {
+            e.preventDefault();
+            const chatId = $(this).data('chatid');
+            ChatService.openChat(chatId);
+        });
     }
 
 

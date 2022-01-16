@@ -29,6 +29,23 @@ class Apis extends methods {
         return this.get(`/users/me`)
     }
 
+    sendMessage(chatId, content) {
+        let data = {
+            content: content,
+            chatId: chatId
+        }
+
+        return this.post(`/messages`, data)
+    }
+
+    getMessages(chatId) {
+        return this.get(`/messages/${chatId}`)
+    }
+
+    getChats() {
+        return this.get(`/chats`)
+    }
+
 }
 
 export default new Apis()

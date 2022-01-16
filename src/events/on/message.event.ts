@@ -13,4 +13,3 @@ class message {
 }
 
 export default message;
-console.log('message.event.ts');

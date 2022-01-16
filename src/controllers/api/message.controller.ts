@@ -19,14 +19,38 @@ class MessageApi extends controller {
             users: { $in: [user._id] }
         })
         if (!chat) {
-            return res.status(404).send({
+
+            return res.status(400).send({
                 message: "Chat not found"
             })
         }
         // END VALIDATE CHAT ID AND TYPE
 
-        const newMessage = await messagesModel.create({ ...message, sender: user._id,/* chatId: chat._id*/ });
+        const newMessage = await messagesModel.create({ ...message, sender: user.userId,/* chatId: chat._id*/ });
         res.status(200).json(newMessage);
+    }
+
+    async getMessages(req: Request, res: Response) {
+        try {
+            const user = req.currentUser;
+            const chatId = req.params.chatId;
+            const chat = await chatModel.findOne({
+                users: { $in: [user._id] },
+                chatId: chatId,
+            })
+            if (!chat) {
+                return res.status(400).send({
+                    message: "Chat not found"
+                })
+            }
+            const messages = await messagesModel.find({ chatId: chatId });
+            res.status(200).json(messages);
+        } catch (error: any) {
+            console.log(error);
+            res.status(500).send({
+                message: error.message
+            })
+        }
     }
 
 

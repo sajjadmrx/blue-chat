@@ -12,6 +12,6 @@ import chatController from "../../controllers/api/chat.controller";
 
 // router.get('/', chatController.find);
 
+router.get('/', chatController.getChats);
 router.get('/:chatId', chatController.createOrGetChat);
-
 export default router;

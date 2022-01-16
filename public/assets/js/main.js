@@ -1,4 +1,6 @@
 import apis from "./apis.js";
+
+import chatService from './services/chats.js'
 import * as store from './store.js'
 (async function ($) {
 
@@ -11,5 +13,7 @@ import * as store from './store.js'
         avatar: data.avatar,
         username: data.username,
     })
+
+    chatService.getChats()
 
 })(jQuery);

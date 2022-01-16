@@ -7,6 +7,17 @@ import controller from "../controllers.main";
 
 class ChatApi extends controller {
 
+    async getChats(req: Request, res: Response) {
+        let chats = await chatModel.find({
+            users: {
+                $all: [req.currentUser._id]
+            }
+        }).populate('users')
+        res.status(200).json({
+            chats
+        })
+    }
+
 
     async createOrGetChat(req: Request, res: Response) {
         const { chatId } = req.params;
@@ -14,7 +25,16 @@ class ChatApi extends controller {
 
 
 
-        let chat = await chatModel.findOne({ chatId });
+        let chat = await chatModel.findOne({
+            $or: [
+                {
+                    participants: {
+                        $all: [req.currentUser._id, chatId],
+
+                    },
+                }
+            ]
+        });
         let user;
         if (!chat) {
             user = await userModel.findOne({

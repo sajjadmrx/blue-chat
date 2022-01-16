@@ -11,7 +11,7 @@ const messagesSchema = new Schema<IMessage>({
     messageId: { type: String, default: () => nanoid() },
     content: { type: String, default: '' },
     // photo: { type: String, default: '' },
-    sender: { type: Schema.Types.ObjectId, ref: 'User' },
+    sender: { type: String, ref: 'User.userId' },
     type: { type: Number, default: MessageType.member_chat },
 
 
