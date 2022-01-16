@@ -8,7 +8,7 @@ import { IUSER } from "./User.interfaces";
 export interface IChat extends Document {
 
     chatId: string;
-    users: Schema.Types.ObjectId[] | IUSER[];
+    users: Schema.Types.String[] | IUSER[];
     latestMessage: Schema.Types.ObjectId | IMessage;
 
     isGroup: boolean;

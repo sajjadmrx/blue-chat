@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { IMessageBody } from "../../interfaces/messages.interface";
+import { IMessage, IMessageBody } from "../../interfaces/messages.interface";
 
 import { IUSER } from "../../interfaces/User.interfaces";
 import chatModel from "../../models/chat.model";
@@ -26,7 +26,9 @@ class MessageApi extends controller {
         }
         // END VALIDATE CHAT ID AND TYPE
 
-        const newMessage = await messagesModel.create({ ...message, sender: user.userId,/* chatId: chat._id*/ });
+        let newMessage: IMessage = await messagesModel.create({ ...message, sender: user._id,/* chatId: chat._id*/ });
+        newMessage = await newMessage.populate("sender", "-password -__v")
+
         res.status(200).json(newMessage);
     }
 
@@ -38,12 +40,27 @@ class MessageApi extends controller {
                 users: { $in: [user._id] },
                 chatId: chatId,
             })
+
             if (!chat) {
                 return res.status(400).send({
                     message: "Chat not found"
                 })
             }
-            const messages = await messagesModel.find({ chatId: chatId });
+            let messages = await messagesModel.find({ chatId: chatId }).populate({
+                path: "sender",
+                select: "-password -__v"
+            });
+            // or limit to 10
+
+
+
+
+
+
+
+
+
+
             res.status(200).json(messages);
         } catch (error: any) {
             console.log(error);

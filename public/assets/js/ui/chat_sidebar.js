@@ -34,18 +34,28 @@ class ChatSidebarUi {
         const chatElement = this.#parent.querySelector(`[data-chatId='${chat.chatId}']`);
         if (chatElement) {
             if (active) {
+                // remove active class in other chat
+                const activeChat = this.#parent.querySelector('.active');
+                if (activeChat) {
+                    activeChat.classList.remove('active');
+                }
                 chatElement.classList.add(active)
             }
         }
         else {
             this.#parent.innerHTML += html;
+            $('.chatSider').on('click', function (e) {
+                // e.preventDefault();
+
+                if (e.target.classList.contains('active')) {
+                    return;
+                }
+                const chatId = $(this).data('chatid');
+                ChatService.openChat(chatId);
+            });
         }
 
-        $('.chatSider').on('click', function (e) {
-            e.preventDefault();
-            const chatId = $(this).data('chatid');
-            ChatService.openChat(chatId);
-        });
+
     }
 
 

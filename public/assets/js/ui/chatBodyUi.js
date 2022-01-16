@@ -48,7 +48,7 @@ class chatBodyUi {
 				return;
 			}
 
-			console.log(content)
+
 			ChatService.sendMessage(chatId, content)
 			this.reset();
 		})
@@ -185,11 +185,12 @@ class chatBodyUi {
 	}
 
 	#messages(messages) {
-		console.log(messages);
+
 		if (messages.length > 0) {
-			let html = '';
-			messages.forEach(message => {
-				html += this.addMessage(message);
+
+
+			messages.map(message => {
+				this.addMessage(message);
 			});
 
 		}
@@ -203,12 +204,14 @@ class chatBodyUi {
 	#addMemberChat(message) {
 		const myId = store.getMyId()
 		const chatId = message.chatId;
-		const senderId = message.sender;
-		console.log(senderId, myId);
+		const senderId = message.sender.userId;
 		if (senderId == myId) {
+
 			$('#message_items').append(this.#getMeContent(message));
 		}
-		else { }
+		else {
+			$('#message_items').append(this.#getOtherContent(message));
+		}
 
 		$('#chat-body').scrollTop($('#chat-body')[0].scrollHeight);
 	}
@@ -222,6 +225,17 @@ class chatBodyUi {
 			 </div>
 		
 		`
+	}
+
+	#getOtherContent(message) {
+		return `
+ 
+				<div class="message-item outgoing-message" id='${message.messageId}'>
+				${message.content}
+					<small class="message-item-date text-muted">22.30</small>
+				</div>
+	`
+
 	}
 
 	#noMessage() {

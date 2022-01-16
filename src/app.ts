@@ -17,9 +17,12 @@ import dataBaseMongo from './bin/db.bin'
 import sessionConfig from './configs/sessions.config';
 import Ejs from './helpers/ejs.helper';
 
-
+// const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
 
 const app = express()
+
+const wrap = (middleware: any) => (socket: Socket, next: any) => middleware(socket.request, {}, next);
+
 class App {
 
     private server: http.Server = new http.Server(app)
@@ -51,9 +54,18 @@ class App {
         app.use(httpContext.middleware)
         app.use(express.static(path.resolve('./public')))
         require('./passports/google.passport')
-        app.use(express_session({ ...sessionConfig }))
+
+        const sessionMiddleware = express_session({ ...sessionConfig })
+        app.use(sessionMiddleware)
+
+
         app.use(passport.initialize())
         app.use(passport.session())
+
+        this.io.use(wrap(sessionMiddleware));
+        this.io.use(wrap(passport.initialize()));
+        this.io.use(wrap(passport.session()));
+
         app.use(express.static(path.resolve('public')))
         app.set('views', path.resolve('views'))
         app.set('view engine', 'ejs')
@@ -76,6 +88,18 @@ class App {
     }
 
     setSocketIO(): void {
+        this.io.use((socket: Socket, next: any) => {
+
+            const request = socket.request as Request
+            //console.log(request.user)
+            if (!request.user) {
+                return next(new Error('Authentication error'))
+            }
+
+            next()
+
+            // more details : https://github.com/socketio/socket.io/blob/master/examples/passport-example/index.js
+        });
         this.io.on('connection', (socket: Socket) => {
             console.log('New client connected')
 
@@ -88,7 +112,7 @@ class App {
                     return;
 
                 socket.on(eventClass.eventName, (...args: any) => {
-                    new eventClass(socket, ...args)
+                    new eventClass(this.io, socket, ...args)
 
                 })
             }
@@ -101,7 +125,7 @@ class App {
                     return;
 
                 socket.emit(eventClass.eventName, (...args: any) => {
-                    new eventClass(socket, ...args)
+                    new eventClass(this.io, socket, ...args)
                 })
             }
 

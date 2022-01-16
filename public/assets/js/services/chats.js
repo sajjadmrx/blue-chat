@@ -3,6 +3,9 @@ import Apis from '../apis.js'
 import chatBodyUi from '../ui/chatBodyUi.js'
 import chat_sidebar from '../ui/chat_sidebar.js'
 import * as store from '../store.js'
+
+import clientSocket from '../socket.js'
+
 class ChatService {
 
 
@@ -29,7 +32,6 @@ class ChatService {
         let chat = resultChat.data
 
         const resultMessages = await Apis.getMessages(chat.chatId)
-
         const messages = resultMessages.data
         const myId = store.getMyId()
 
@@ -53,11 +55,12 @@ class ChatService {
         try {
             const results = await Apis.sendMessage(chatId, content)
             const { data } = results;
-            console.log(data)
+
             if (results.status == 200) {
-                console.log('send message success')
+
                 // return true
                 chatBodyUi.addMessage(data)
+                // clientSocket.emit('message', data)
             }
             else {
                 throw new Error('error')
