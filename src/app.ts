@@ -16,6 +16,7 @@ import mainWeb from './routes/web/main.web'
 import dataBaseMongo from './bin/db.bin'
 import sessionConfig from './configs/sessions.config';
 import Ejs from './helpers/ejs.helper';
+import { IUSER } from './interfaces/User.interfaces'
 
 // const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
 
@@ -103,7 +104,8 @@ class App {
         this.io.on('connection', (socket: Socket) => {
             console.log('New client connected')
 
-
+            const request = socket.request as Request
+            const user = request.user as IUSER
             /// on Events
             const eventFiles = fs.readdirSync(path.resolve('./src/events/on'))
             for (const file of eventFiles) {
@@ -112,7 +114,7 @@ class App {
                     return;
 
                 socket.on(eventClass.eventName, (...args: any) => {
-                    new eventClass(this.io, socket, ...args)
+                    new eventClass(this.io, socket, user, ...args)
 
                 })
             }
@@ -125,7 +127,7 @@ class App {
                     return;
 
                 socket.emit(eventClass.eventName, (...args: any) => {
-                    new eventClass(this.io, socket, ...args)
+                    new eventClass(this.io, socket, user, ...args)
                 })
             }
 

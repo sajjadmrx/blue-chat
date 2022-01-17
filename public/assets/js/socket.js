@@ -3,6 +3,7 @@ const socket = io('/');
 class clientSocket {
 
     emit(event, ...args) {
+
         socket.emit(event, ...args)
     }
 

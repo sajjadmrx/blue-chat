@@ -1,5 +1,6 @@
 import ChatService from '../services/chats.js'
 import * as store from '../store.js'
+import clientSocket from '../socket.js'
 let messageType = {
 	member_chat: 0,
 	new_member: 1,
@@ -27,7 +28,7 @@ class chatBodyUi {
 		let html = '';
 		//	html += this.#getHeader(chat)
 		this.#parent.before(this.#getHeader(chat))
-		html += this.#getChatBody(messages)
+		html += this.#getChatBody(messages, chat)
 		// html += this.#getFooter(chat)
 		this.#parent.after(this.#getFooter(chat))
 
@@ -51,6 +52,30 @@ class chatBodyUi {
 
 			ChatService.sendMessage(chatId, content)
 			this.reset();
+		})
+
+
+		// typeing event
+		$('#message_content').on('keyup', function (e) {
+			const content = $(this).val();
+			const chatId = $('#chatId').val();
+			if (content.length < 0) {
+				return;
+			}
+			setTimeout(() => {
+				clientSocket.emit('typing', { chatId: chatId, content: content })
+			}, 1000);
+
+		})
+
+		clientSocket.on('typing', (data) => {
+			const username = data.username
+			//	if (chatId == chat.chatId) {
+			$('.typeing-status').html(
+				`${username}, در حال نوشتن...`
+			)
+			//}
+			setTimeout(() => { $('.typeing-status').html('') }, 1000);
 		})
 	}
 
@@ -88,7 +113,7 @@ class chatBodyUi {
 						</div>
 						<div>
 							<h6 class="mb-1 primary-font line-height-18">${chat.name}</h6>
-							<span class="small text-success">در حال نوشتن ...</span>
+							<span class="small text-success typeing-status" ></span>
 						</div>
 						<div class="ml-auto d-flex">
 							<button type="button" class="ml-2 btn btn-sm btn-success btn-floating">
@@ -131,7 +156,7 @@ class chatBodyUi {
         
           
 				<form class="d-flex align-items-center" id='form_message'>
-					<input type="text" class="form-control" placeholder="پیام ..." name='message_content'>
+					<input type="text" class="form-control" placeholder="پیام ..." name='message_content' id='message_content'>
 					<input type="hidden" class="form-control"  value='${chat.chatId}' name='chatId'>
 					<div class="d-flex">
 						<button type="button" class="ml-3 btn btn-primary btn-floating">
@@ -166,10 +191,10 @@ class chatBodyUi {
 		return div;
 	}
 
-	#getChatBody(messages) {
+	#getChatBody(messages, chat) {
 
 		return `
-			
+					<input type="hidden" id="chatId" value="${chat.chatId}">
 						<div class="message-items" id='message_items'>
 							
 							

@@ -1,5 +1,6 @@
 import ChatService from '../services/chats.js'
 import * as store from '../store.js'
+import clientSocket from '../socket.js'
 class ChatSidebarUi {
 
     #parent = document.getElementById('chatList')
@@ -52,6 +53,7 @@ class ChatSidebarUi {
                 }
                 const chatId = $(this).data('chatid');
                 ChatService.openChat(chatId);
+                clientSocket.emit('chat_opened', chatId);
             });
         }
 

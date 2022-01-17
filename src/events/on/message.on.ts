@@ -1,12 +1,13 @@
 import socketIO, { Socket } from 'socket.io'
 import { IMessageSocket } from '../../interfaces/messages.interface'
+import { IUSER } from '../../interfaces/User.interfaces'
 class Message {
 
 
     static eventName = 'message'
     static isEnabled = true
     args: any
-    constructor(public io: socketIO.Server, public socket: Socket, ...data: any) {
+    constructor(public io: socketIO.Server, public socket: Socket, public user: IUSER, ...data: any) {
         this.args = data
         this.handle();
     }
