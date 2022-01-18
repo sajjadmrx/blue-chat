@@ -28,8 +28,8 @@ Make sure you have [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.co
 1. Clone or Download the repository
 
 	```
-	$ git clone https://github.com/sajjadmrx/blueChat.git
-	$ cd blueChat
+	$ git clone https://github.com/sajjadmrx/blue-chat.git
+	$ cd blue-chat
 	```
 2. Install Dependencies
 
