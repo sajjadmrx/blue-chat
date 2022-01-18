@@ -1,14 +1,6 @@
-
 # Project Title
 
 A brief description of what this project does and who it's for
-
-
-# Project Title
-
-A brief description of what this project does and who it's for
-
-
 
 # blue Chat
  A Real Time Chat Application built using Node.js, Express, Mongoose, Socket.io, Passport
