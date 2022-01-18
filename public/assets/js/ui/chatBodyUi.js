@@ -51,6 +51,7 @@ class chatBodyUi {
 
 
 			ChatService.sendMessage(chatId, content)
+
 			this.reset();
 		})
 
@@ -77,6 +78,8 @@ class chatBodyUi {
 			//}
 			setTimeout(() => { $('.typeing-status').html('') }, 1000);
 		})
+
+
 	}
 
 

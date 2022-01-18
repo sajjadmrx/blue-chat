@@ -23,10 +23,11 @@ class ChatSidebarUi {
 									<h6 class="mb-0">
                                         ${chat.name}
                                     </h6>
-									<p class="m-0 small text-muted">
+									<p class="m-0 small text-muted" id='lastMessage_${chat.chatId}'>
                                         ${chat.lastMassage || "اولین پیغام را بفرستید"}
                                     </p>
 								</div>
+                <span class="badge badge-primary badge-pill ml-auto" id='badgeMessage_${chat.chatId}'></span>
 			</a>
         
         `;
@@ -54,6 +55,8 @@ class ChatSidebarUi {
                 const chatId = $(this).data('chatid');
                 ChatService.openChat(chatId);
                 clientSocket.emit('chat_opened', chatId);
+                // clear badge
+                $(`#badgeMessage_${chatId}`).html('');
             });
         }
 
@@ -61,7 +64,19 @@ class ChatSidebarUi {
     }
 
 
+    setLastMessage(chatId, content) {
+        const lastMessage = document.getElementById(`lastMessage_${chatId}`);
+        lastMessage.innerText = content;
+    }
 
+    setBadgeMessage(chatId) {
+        const badgeMessage = document.getElementById(`badgeMessage_${chatId}`);
+        const num = parseInt(badgeMessage.innerText) || 0;
+        if (badgeMessage.parentNode.classList.contains('active'))
+            return
+        else
+            badgeMessage.innerText = num + 1;
+    }
 
 
 }

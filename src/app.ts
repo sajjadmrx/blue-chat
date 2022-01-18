@@ -9,7 +9,7 @@ import express_session from 'express-session';
 
 // tools
 import httpContext from "express-http-context";
-
+import chalk from 'chalk';
 // routers
 import mainApi from './routes/api/main.api'
 import mainWeb from './routes/web/main.web'
@@ -101,11 +101,16 @@ class App {
 
             // more details : https://github.com/socketio/socket.io/blob/master/examples/passport-example/index.js
         });
-        this.io.on('connection', (socket: Socket) => {
-            console.log('New client connected')
-
+        this.io.on('connection', async (socket: Socket) => {
+            console.log(chalk.green('New connection'))
             const request = socket.request as Request
             const user = request.user as IUSER
+
+            const SocketId = socket.id
+            // save socketId to user
+            user.socketId = SocketId
+            await user.save()
+            socket.join(user.userId)
             /// on Events
             const eventFiles = fs.readdirSync(path.resolve('./src/events/on'))
             for (const file of eventFiles) {
@@ -134,7 +139,7 @@ class App {
 
 
             socket.on('disconnect', () => {
-                console.log('Client disconnected')
+                console.log(chalk.red('Disconnected'))
             })
         })
     }

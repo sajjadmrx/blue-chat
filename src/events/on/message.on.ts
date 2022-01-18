@@ -1,6 +1,8 @@
 import socketIO, { Socket } from 'socket.io'
 import { IMessageSocket } from '../../interfaces/messages.interface'
 import { IUSER } from '../../interfaces/User.interfaces'
+import chatModel from '../../models/chat.model'
+import { Document, Schema } from "mongoose";
 class Message {
 
 
@@ -12,11 +14,23 @@ class Message {
         this.handle();
     }
 
-    handle(): void {
+    async handle(): Promise<void> {
         const data: IMessageSocket = this.args[0];
 
-        // send to chatId
-        // this.io.to(data.chatId as string).emit(Message.eventName, data);
+
+        const chat = await chatModel.findOne({ chatId: data.chatId }).populate('users')
+        if (!chat) {
+            return;
+        }
+        chat.users.forEach(us => {
+            us = us as IUSER
+            if (us.userId !== this.user.userId) {
+                this.socket.to(us.userId).emit('message', data)
+            }
+        })
+
+        chat.latestMessage = data._id as Schema.Types.ObjectId
+        await chat.save()
     }
 
 }

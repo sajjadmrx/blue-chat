@@ -29,7 +29,11 @@ const UserSchema = new Schema<IUSER>({
         type: String,
         required: true,
         default: 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'
-    }
+    },
+    socketId: {
+        type: String,
+        required: false,
+    },
 }, { timestamps: true });
 
 const userModel = model('User', UserSchema);

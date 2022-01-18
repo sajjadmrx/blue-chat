@@ -60,7 +60,8 @@ class ChatService {
 
                 // return true
                 chatBodyUi.addMessage(data)
-                // clientSocket.emit('message', data)
+                clientSocket.emit('message', data)
+                chat_sidebar.setLastMessage(chatId, content)
             }
             else {
                 throw new Error('error')

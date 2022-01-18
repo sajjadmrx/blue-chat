@@ -18,13 +18,7 @@ class ChatOpened {
 
     const chatId: string = this.args[0];
 
-    //validate chatId
 
-
-    // end validate chatId
-
-
-    //this.socket.join(chatId);
     this.socket.join(chatId);
 
   }
