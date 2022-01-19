@@ -34,6 +34,15 @@ const UserSchema = new Schema<IUSER>({
         type: String,
         required: false,
     },
+    isOnline: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    lastOnline: {
+        type: Date,
+        required: false,
+    }
 }, { timestamps: true });
 
 const userModel = model('User', UserSchema);

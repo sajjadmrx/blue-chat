@@ -1,5 +1,5 @@
 import socketIO, { Socket } from 'socket.io'
-import { IUSER } from '../../interfaces/User.interfaces'
+import { IUSER } from '../interfaces/User.interfaces'
 
 
 class typing {

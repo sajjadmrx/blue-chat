@@ -8,6 +8,8 @@ export interface IUSER extends Document {
     provider: string;
     avatar: string;
     socketId: string;
+    isOnline: boolean;
+    lastOnline: Date;
     createdAt: Date;
     updatedAt: Date;
 }

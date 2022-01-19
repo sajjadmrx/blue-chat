@@ -1,7 +1,7 @@
 import socketIO, { Socket } from 'socket.io'
-import { IMessageSocket } from '../../interfaces/messages.interface'
-import { IUSER } from '../../interfaces/User.interfaces'
-import chatModel from '../../models/chat.model'
+import { IMessageSocket } from '../interfaces/messages.interface'
+import { IUSER } from '../interfaces/User.interfaces'
+import chatModel from '../models/chat.model'
 import { Document, Schema } from "mongoose";
 class Message {
 

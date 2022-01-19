@@ -109,38 +109,40 @@ class App {
             const SocketId = socket.id
             // save socketId to user
             user.socketId = SocketId
+            user.isOnline = true
+            user.lastOnline = new Date()
             await user.save()
             socket.join(user.userId)
+
+
+
             /// on Events
-            const eventFiles = fs.readdirSync(path.resolve('./src/events/on'))
+
+
+            const eventFiles = fs.readdirSync(path.resolve('./src/events'))
             for (const file of eventFiles) {
-                const eventClass = require(path.resolve(`./src/events/on/${file}`)).default
+
+                const eventClass = require(path.resolve(`./src/events/${file}`)).default
                 if (!eventClass.isEnabled)
                     return;
 
                 socket.on(eventClass.eventName, (...args: any) => {
                     new eventClass(this.io, socket, user, ...args)
-
                 })
-            }
 
-            // emit Events
-            const emitFiles = fs.readdirSync(path.resolve('./src/events/emits'))
-            for (const file of emitFiles) {
-                const eventClass = require(path.resolve(`./src/events/emits/${file}`)).default
-                if (!eventClass.isEnabled)
-                    return;
-
-                socket.emit(eventClass.eventName, (...args: any) => {
-                    new eventClass(this.io, socket, user, ...args)
-                })
             }
 
 
 
-            socket.on('disconnect', () => {
+
+            socket.on('disconnect', async () => {
                 console.log(chalk.red('Disconnected'))
+                user.isOnline = false
+                user.lastOnline = new Date()
+                await user.save()
             })
+
+
         })
     }
 
